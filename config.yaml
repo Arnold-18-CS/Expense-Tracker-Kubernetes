@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: expense-tracker-config
+data:
+  APP_PORT: "3000"
+  API_BASE_PATH: "/api/expenses"
