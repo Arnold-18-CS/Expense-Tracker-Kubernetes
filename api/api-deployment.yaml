@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: ogudaarnold/expense-tracker-api:v1.0
+        image: ogudaarnold/expense-tracker-api:v1.1
         ports:
         - containerPort: 3000
         env:
