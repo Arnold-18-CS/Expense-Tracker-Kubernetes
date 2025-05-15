@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expense-tracker-db
+  labels:
+    app: expense-tracker-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expense-tracker-db
+  template:
+    metadata:
+      labels:
+        app: expense-tracker-db
+    spec:
+      containers:
+      - name: db
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "password"
+        - name: POSTGRES_DB
+          value: "expense_tracker"

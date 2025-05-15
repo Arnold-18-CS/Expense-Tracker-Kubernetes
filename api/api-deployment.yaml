@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expense-tracker-api
+  labels:
+    app: expense-tracker-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expense-tracker-api
+  template:
+    metadata:
+      labels:
+        app: expense-tracker-api
+    spec:
+      containers:
+      - name: api
+        image: ogudaarnold/expense-tracker-api:v1.0
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          value: "postgres://postgres:password@expense-tracker-db:5432/expense_tracker"
