@@ -35,6 +35,13 @@ spec:
             secretKeyRef:
               name: expense-tracker-secret
               key: POSTGRES_DB
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
         # - name: POSTGRES_PASSWORD
         #   value: "password"
         # - name: POSTGRES_DB
