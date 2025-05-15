@@ -19,6 +19,33 @@ spec:
         image: ogudaarnold/expense-tracker-api:v1.1
         ports:
         - containerPort: 3000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
         env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: expense-tracker-config
+              key: APP_PORT
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: expense-tracker-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: expense-tracker-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: expense-tracker-secret
+              key: POSTGRES_DB
         - name: DATABASE_URL
-          value: "postgres://postgres:password@expense-tracker-db:5432/expense_tracker"
+          value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@expense-tracker-db:5432/$(POSTGRES_DB)"
