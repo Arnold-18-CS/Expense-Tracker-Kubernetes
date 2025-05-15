@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: expense-tracker-db
   labels:
     app: expense-tracker-db
 spec:
+  serviceName: expense-tracker-db
   replicas: 1
   selector:
     matchLabels:
@@ -35,14 +36,16 @@ spec:
             secretKeyRef:
               name: expense-tracker-secret
               key: POSTGRES_DB
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        # - name: POSTGRES_PASSWORD
-        #   value: "password"
-        # - name: POSTGRES_DB
-        #   value: "expense_tracker"
+        volumeMounts:
+        - name: db-storage
+          mountPath: /var/lib/postgresql/data
+          subPath: pgdata
+  volumeClaimTemplates:
+  - metadata:
+      name: db-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: hostpath
