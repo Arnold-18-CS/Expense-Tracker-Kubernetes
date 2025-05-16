@@ -42,6 +42,20 @@ kubectl create namespace monitoring
 kubectl apply -f api/ -f db/ -f config_secrets/ -f frontend/ -f monitoring/
 ```
 
+3. **Confirm that all the pods are running**:
+- You can either check via docker desktop or run the following commands in your terminal:
+   - For the basic pods:  
+```bash
+kubectl get pods -w
+```
+   - Cancel the commmand (Ctrl-c), once all the pods are in the Running state.
+   - For the monitoring pods:
+```bash
+kubectl get pods -n monitoring
+kubectl get svc -n monitoring
+```
+   - Cancel the commmand (Ctrl-c), once all the pods are in the Running state.
+
 3. **Access the App**:
 - Open **http://localhost:30080** in your browser.
 - Add, edit or delete expenses to experience the app functionalities.
