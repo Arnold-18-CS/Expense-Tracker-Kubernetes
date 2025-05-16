@@ -72,7 +72,6 @@ kubectl get svc -n monitoring
   kubectl port-forward svc/prometheus 9090:9090 -n monitoring
   ```
   - Keep the terminal running to ensure the service stays up.
-  - Then ,on the browser of choice, open `http://localhost:9090`
 
 - Deploy Grafana for logging:
   - Loki and Grafana are used to collect and visualize logs from all pods, with Promtail as the log collection agent.
@@ -85,3 +84,20 @@ kubectl port-forward svc/grafana 3000:3000 -n monitoring
 
 - Log in (default: `admin/admin`), add Loki (`http://loki:3100`) as a data source, and explore logs in the "Explore" tab using queries like `{app="expense-tracker-api"}`.
 - **Note**: Promtail scrapes logs from `/var/log/pods` in Docker Desktop and pushes them to Loki. Ensure pods have correct labels (e.g., `app=expense-tracker-api`).
+
+5. **CI/CD Pipeline Overview**:
+    
+- This project includes a GitHub Actions-based CI/CD pipeline that automates the deployment of the Expense Tracker application to a Kubernetes cluster.
+
+Pipeline Features:
+CI (Continuous Integration):
+
+   - Validates Kubernetes manifests (*.yaml) for syntax errors.
+
+   - Lints and checks for basic Kubernetes best practices.
+
+CD (Continuous Deployment):
+
+   - Applies all Kubernetes manifests in the /api, /db, /frontend, /config_secrets, and /monitoring directories.
+
+   - Deploys the entire stack to the configured Kubernetes cluster automatically.
