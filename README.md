@@ -70,3 +70,19 @@ kubectl get svc -n monitoring
   - Keep the terminal running to ensure the service stays up.
   - Then ,on the browser of choice, open **http://localhost:9090**
   - 
+5. **CI/CD Pipeline Overview**:
+    
+- This project includes a GitHub Actions-based CI/CD pipeline that automates the deployment of the Expense Tracker application to a Kubernetes cluster.
+
+Pipeline Features:
+CI (Continuous Integration):
+
+   - Validates Kubernetes manifests (*.yaml) for syntax errors.
+
+   - Lints and checks for basic Kubernetes best practices.
+
+CD (Continuous Deployment):
+
+   - Applies all Kubernetes manifests in the /api, /db, /frontend, /config_secrets, and /monitoring directories.
+
+   - Deploys the entire stack to the configured Kubernetes cluster automatically.
