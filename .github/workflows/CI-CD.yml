@@ -3,31 +3,29 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Or your default branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name:  Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Set up kubeconfig
-      run: |
-        mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+      - name:  Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
 
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v3
-      with:
-        version: latest
+      - name: Set kubeconfig for Cloud
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_CLOUD }}" > ~/.kube/config
 
-    - name: Apply Kubernetes Manifests
-      run: |
-        kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
-        kubectl apply -f config_secrets/
-        kubectl apply -f db/
-        kubectl apply -f api/
-        kubectl apply -f frontend/
-        kubectl apply -f monitoring/
+      - name: Deploy YAMLs 
+        run: |
+          kubectl apply -f db/
+          kubectl apply -f config_secrets/
+          kubectl apply -f api/
+          kubectl apply -f frontend/
+          kubectl apply -f monitoring/
