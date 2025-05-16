@@ -65,6 +65,5 @@ jobs:
         kubectl get pods -n monitoring
         kubectl rollout status statefulset/elasticsearch -n monitoring --timeout=120s
         kubectl rollout status daemonset/fluentd -n monitoring --timeout=120s
-        kubectl rollout status deployment/grafana -n monitoring --timeout=120s
         kubectl rollout status deployment/kibana -n monitoring --timeout=120s
         kubectl rollout status deployment/prometheus -n monitoring --timeout=120s
