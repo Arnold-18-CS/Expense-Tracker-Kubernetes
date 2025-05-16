@@ -1,31 +1,70 @@
-name: CI/CD Pipeline
+name: Kubernetes CI/CD
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'api/**'
+      - 'db/**'
+      - 'frontend/**'
+      - 'logging/**'
+      - 'monitoring/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'api/**'
+      - 'db/**'
+      - 'frontend/**'
+      - 'logging/**'
+      - 'monitoring/**'
 
 jobs:
-  deploy:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - name:  Checkout Code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up kube-linter
+      uses: bitnami-labs/kube-linter-action@v0.6.0
+      with:
+        directory: .
+        format: sarif
+        exclude_dirs: .github
+    - name: Upload linting results
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: kube-linter-results.sarif
 
-      - name:  Install kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
-
-      - name: Set kubeconfig for Cloud
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG_CLOUD }}" > ~/.kube/config
-
-      - name: Deploy YAMLs 
-        run: |
-          kubectl apply -f db/
-          kubectl apply -f config_secrets/
-          kubectl apply -f api/
-          kubectl apply -f frontend/
-          kubectl apply -f monitoring/
+  deploy:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v4
+    - name: Configure Kubernetes context
+      run: |
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+    - name: Apply Kubernetes manifests
+      run: |
+        kubectl apply -f api/
+        kubectl apply -f db/
+        kubectl apply -f frontend/
+        kubectl apply -f logging/
+        kubectl apply -f monitoring/
+    - name: Verify deployment
+      run: |
+        kubectl get pods -n default
+        kubectl rollout status deployment/expense-tracker-api -n default --timeout=120s
+        kubectl rollout status deployment/expense-tracker-db -n default --timeout=120s
+        kubectl rollout status deployment/expense-tracker-frontend -n default --timeout=120s
+        kubectl get pods -n monitoring
+        kubectl rollout status statefulset/elasticsearch -n monitoring --timeout=120s
+        kubectl rollout status daemonset/fluentd -n monitoring --timeout=120s
+        kubectl rollout status deployment/grafana -n monitoring --timeout=120s
+        kubectl rollout status deployment/kibana -n monitoring --timeout=120s
+        kubectl rollout status deployment/prometheus -n monitoring --timeout=120s
