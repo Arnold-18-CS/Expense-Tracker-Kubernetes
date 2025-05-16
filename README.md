@@ -63,9 +63,10 @@ kubectl get svc -n monitoring
 4. **Setup Monitoring and Logging**:
 - Deploy Prometheus for monitoring:
   - Prometheus is deployed to collect metrics from the backend (e.g api_requests_total) in the default and monitoring namespaces. RBAC permissions have been configured for pod discovery as well using ClusterRole and ClusterRoleBinding.
-  - To access Prometheus:
+  - To access Prometheus, on a separate terminal tab run the command:
   ```bash
   kubectl port-forward svc/prometheus 9090:9090 -n monitoring
   ```
+  - Keep the terminal running to ensure the service stays up.
   - Then ,on the browser of choice, open **http://localhost:9090**
   - 
