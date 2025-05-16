@@ -42,7 +42,7 @@ spec:
           subPath: pgdata
   volumeClaimTemplates:
   - metadata:
-      name: db-storage
+      name: pvc
     spec:
       accessModes: ["ReadWriteOnce"]
       resources:
