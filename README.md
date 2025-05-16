@@ -95,18 +95,32 @@
 
 - Deploy Grafana for logging:
 
-  - Loki and Grafana are used to collect and visualize logs from all pods, with Promtail as the log collection agent.
-  - To access Grafana, on a separate terminal tab, run the command:
+  - Uses the EFK stack (Elasticsearch, Fluentd, Kibana) defined in `logging/`.agent.
+  - Confirm that the logging service works:
 
     ```bash
-    kubectl port-forward svc/grafana 3000:3000 -n monitoring
+    kubectl get pods -n monitoring
+    ```
+
+  - Port-forward Kibana to your local machine:
+
+    ```bash
+    kubectl port-forward svc/kibana -n monitoring 5601:5601
     ```
 
   - Keep the terminal running to ensure the service stays up.
-  - Then, on the browser of choice, open `http://localhost:3000`
+  - Then, on the browser of choice, open `http://localhost:5601`
+  - Once Kibana is running:
+    - Navigate to Discover in the Kibana UI.
+    - Select or create an index pattern:
+    - Use pattern: `fluentd-*` or `logstash-*` depending on configuration.
+    - Add filter to focus on your app:
 
-- Log in (default: `admin/admin`), add Loki (`http://loki:3100`) as a data source, and explore logs in the "Explore" tab using queries like `{app="expense-tracker-api"}`.
-- **Note**: Promtail scrapes logs from `/var/log/pods` in Docker Desktop and pushes them to Loki. Ensure pods have correct labels (e.g., `app=expense-tracker-api`).
+    ```bash
+    kubernetes.labels.app : "expense-tracker-api"
+    ```
+
+- You will now see all logs emitted by the API container!
 
 6.**CI/CD Pipeline Overview**
 
