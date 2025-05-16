@@ -13,10 +13,14 @@ spec:
     metadata:
       labels:
         app: expense-tracker-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: api
-        image: ogudaarnold/expense-tracker-api:v1.1
+        image: ogudaarnold/expense-tracker-api:v1.2
         ports:
         - containerPort: 3000
         resources:
