@@ -19,3 +19,10 @@ spec:
         image: ogudaarnold/expense-tracker-frontend:v1.3
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
