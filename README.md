@@ -42,6 +42,20 @@ kubectl create namespace monitoring
 kubectl apply -f api/ -f db/ -f config_secrets/ -f frontend/ -f monitoring/
 ```
 
+3. **Confirm that all the pods are running**:
+- You can either check via docker desktop or run the following commands in your terminal:
+   - For the basic pods:  
+```bash
+kubectl get pods -w
+```
+   - Cancel the commmand (Ctrl-c), once all the pods are in the Running state.
+   - For the monitoring pods:
+```bash
+kubectl get pods -n monitoring
+kubectl get svc -n monitoring
+```
+   - Cancel the commmand (Ctrl-c), once all the pods are in the Running state.
+
 3. **Access the App**:
 - Open **http://localhost:30080** in your browser.
 - Add, edit or delete expenses to experience the app functionalities.
@@ -49,9 +63,10 @@ kubectl apply -f api/ -f db/ -f config_secrets/ -f frontend/ -f monitoring/
 4. **Setup Monitoring and Logging**:
 - Deploy Prometheus for monitoring:
   - Prometheus is deployed to collect metrics from the backend (e.g api_requests_total) in the default and monitoring namespaces. RBAC permissions have been configured for pod discovery as well using ClusterRole and ClusterRoleBinding.
-  - To access Prometheus:
+  - To access Prometheus, on a separate terminal tab run the command:
   ```bash
   kubectl port-forward svc/prometheus 9090:9090 -n monitoring
   ```
+  - Keep the terminal running to ensure the service stays up.
   - Then ,on the browser of choice, open **http://localhost:9090**
   - 
