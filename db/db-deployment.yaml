@@ -37,12 +37,12 @@ spec:
               name: expense-tracker-secret
               key: POSTGRES_DB
         volumeMounts:
-        - name: db-storage
+        - name: pvc-storage
           mountPath: /var/lib/postgresql/data
           subPath: pgdata
   volumeClaimTemplates:
   - metadata:
-      name: pvc
+      name: pvc-storage
     spec:
       accessModes: ["ReadWriteOnce"]
       resources:

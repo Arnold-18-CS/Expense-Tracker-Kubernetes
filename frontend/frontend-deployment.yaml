@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ogudaarnold/expense-tracker-frontend:v1.2
+        image: ogudaarnold/expense-tracker-frontend:v1.3
         ports:
         - containerPort: 80
