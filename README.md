@@ -38,6 +38,7 @@
 
 2. **Deploy to Kubernetes**:
 ```bash
+kubectl create namespace monitoring
 kubectl apply -f api/ -f db/ -f config_secrets/ -f frontend/ -f monitoring/
 ```
 
