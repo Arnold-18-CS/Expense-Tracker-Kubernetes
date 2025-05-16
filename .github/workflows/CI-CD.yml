@@ -27,11 +27,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     - name: Set up kube-linter
-      uses: bitnami-labs/kube-linter-action@v0.6.0
+      uses: stackrox/kube-linter-action@v1.0.4
       with:
         directory: .
         format: sarif
-        exclude_dirs: .github
     - name: Upload linting results
       uses: github/codeql-action/upload-sarif@v3
       with:
