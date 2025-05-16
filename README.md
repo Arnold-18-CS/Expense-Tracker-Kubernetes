@@ -1,7 +1,9 @@
 # Expense Tracker Kubernetes Deployment
 
 ## Project Overview
-A simple expense tracking application built for a hackathon, allowing users to add, edit, and delete expenses with categories. The app features a persistent PostgreSQL database, a secure backend with ConfigMaps and Secrets, and a user-friendly frontend with inline editing. The project has been enhanced with monitoring using Prometheus and logging using the EFK stack (Elasticsearch, Fluentd, Kibana) for observability.
+- A simple expense tracking application built for a hackathon, allowing users to add, edit, and delete expenses with categories.
+- The app features a persistent PostgreSQL database, a secure backend with ConfigMaps and Secrets, and a user-friendly frontend with inline editing.
+- The project has been enhanced with monitoring using Prometheus.
 
 ## Project Structure
 - api/: Manifest for the API deployment and services.
