@@ -50,5 +50,5 @@ kubectl apply -f api/ -f db/ -f config_secrets/ -f frontend/ -f monitoring/
   ```bash
   kubectl port-forward svc/prometheus 9090:9090 -n monitoring
   ```
-  - Then ,on the browser of choice, open **http:localhost:9090**
+  - Then ,on the browser of choice, open **http://localhost:9090**
   - 
