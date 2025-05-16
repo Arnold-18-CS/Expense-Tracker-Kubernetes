@@ -32,7 +32,7 @@
 ## Setup Instructions
 1. **Clone the Repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Arnold-18-CS/Expense-Tracker-Kubernetes.git
    cd Expense-Tracker-Kubernetes
    ```
 
